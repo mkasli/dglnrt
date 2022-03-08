@@ -104,15 +104,7 @@ sim.conditions <- expand.grid(n.person= c(500),
     # Random shuffle of examinees
     
     rt <- rt[sample(1:nrow(rt),nrow(rt),replace = FALSE),]
-    
-    # Introduce missingness as in the dataset 
-    # Each half of the examinees respond only to 170 items
-    # 87 items are in common.
-    
-    #rt[1:1640,171:253] = NA
-    #rt[1641:3280,88:170] = NA
-    
-    
+      
     return(list(
       rt = rt,
       b = beta,
@@ -123,20 +115,7 @@ sim.conditions <- expand.grid(n.person= c(500),
     ))
   }
 
-
-  #k = 17
-  #mean(a$rt[1:3186,k])
-  #mean(a$rt[3187:3280,k])
-  #C[k]
-
-
 ##############################################################################
-
-#mod <- cmdstan_model(here::here('dglnrt_v2_simulation/dglnrt2.stan'))
-
-#mod <- cmdstan_model('/Users/muratkasli/Box/RT_rstan/sim_RT/cengiz_github/dg-lnrt-main/dglnrt_v2_simulation/dglnrt2.stan')
-
-#mod <- cmdstan_model('/scratch/default/tmp/mxk841/dglnrt2.stan')
 
 mod <- cmdstan_model(here::here('diss_simulation/dglnrt2.stan'))    
     
@@ -196,11 +175,9 @@ mod <- cmdstan_model(here::here('diss_simulation/dglnrt2.stan'))
  
     fit$cmdstan_summary()
     
-    stanfit <- rstan::read_stan_csv(fit$output_files())
+    #stanfit <- rstan::read_stan_csv(fit$output_files())
     
-    shinystan::launch_shinystan(stanfit)
-    
-    filename1 <- paste ("dglnrt","cmdstan_deneme", sep ="")
+    filename1 <- paste ("dglnrt","sim", sep ="")
     
     save.image(filename1)
 
@@ -208,31 +185,31 @@ save.image(here(''))
 
 ################################################################  
 
-# inverse-gamma belirleme
+# inverse-gamma
 #  alpha    ~ inv_gamma(800,1550);
 #  alpha    ~ inv_gamma(n.person/2=v0, v0*a); a=mean(alpha0)
 
 # beta estimates (Eq. 23)
 
-time<-as.data.frame(data_rt$Y)
+#time<-as.data.frame(data_rt$Y)
 
-beta0 = colMeans(time,na.rm=TRUE)
+#beta0 = colMeans(time,na.rm=TRUE)
 
 # alpha estimates (Eq. 24)
 
 # dglnrt_cmdstanr_v1 file indan alindi.
 #alpha0 = sqrt(1/colMeans((log(d[,5:29]) - matrix(beta0,93,25,byrow=T))^2,na.rm=TRUE))
 
-alpha0 = sqrt(1/colMeans((time - matrix(beta0,n.person,n.item,byrow=T))^2,na.rm=TRUE))
+#alpha0 = sqrt(1/colMeans((time - matrix(beta0,n.person,n.item,byrow=T))^2,na.rm=TRUE))
 
 # hyper parameters for inverse gamma 
 # Levy, Bayesian Psychometric Analysis, page 83, inverse gamma prior distribution
 
 
-N= n.person
-a = mean(alpha0)
-v0 = N/2
-v0
-v0*a
+#N= n.person
+#a = mean(alpha0)
+#v0 = N/2
+#v0
+#v0*a
 
 ###################################################################################
