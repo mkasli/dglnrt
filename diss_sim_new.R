@@ -1,4 +1,11 @@
 
+require(MASS)
+require(MBESS)
+require(matrixStats)
+require(cmdstanr)
+require(here)
+require(rstan)
+require(psych)
 
 sim.conditions <- expand.grid(n.person= c(500),
                               n.item  = c(50,100),
